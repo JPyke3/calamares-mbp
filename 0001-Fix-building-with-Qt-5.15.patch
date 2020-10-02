@@ -1,0 +1,25 @@
+From 4d41a5d3bbd53396a1291c71ca1c8cbfea61e086 Mon Sep 17 00:00:00 2001
+From: JPyke3 <pyke.jacob1@gmail.com>
+Date: Fri, 2 Oct 2020 02:03:58 +0200
+Subject: [PATCH] Fix building with Qt>=5.15
+
+Signed-off-by: JPyke3 <pyke.jacob1@gmail.com>
+---
+ src/modules/partition/gui/PartitionSplitterWidget.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/modules/partition/gui/PartitionSplitterWidget.cpp b/src/modules/partition/gui/PartitionSplitterWidget.cpp
+index 0281ab32c..8799757f0 100644
+--- a/src/modules/partition/gui/PartitionSplitterWidget.cpp
++++ b/src/modules/partition/gui/PartitionSplitterWidget.cpp
+@@ -32,6 +32,7 @@
+ #include <QPainter>
+ #include <QMouseEvent>
+ #include <QStyleOption>
++#include <QPainterPath>
+ 
+ static const int VIEW_HEIGHT = qMax( CalamaresUtils::defaultFontHeight() + 8, // wins out with big fonts
+                                      int( CalamaresUtils::defaultFontHeight() * 0.6 ) + 22 ); // wins out with small fonts
+-- 
+2.28.0
+

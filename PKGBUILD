@@ -1,11 +1,10 @@
 # Maintainer: Philip Müller <philm[at]manjaro[dog]org>
+# Maintainer: Jacob Pyke <pyke.jacob1@gmail.com>
 
-pkgname=calamares
-pkgver=3.2.30
-_pkgver=3.2.39
+pkgname=calamares-mbp
+pkgver=3.2.13
 pkgrel=1
-_commit=f84204ad708ede9b2d6e2da14f06f733cd0f19fc
-pkgdesc='Distribution-independent installer framework'
+pkgdesc='Distribution-independent installer framework, with T2 MacBook patches'
 arch=('i686' 'x86_64')
 license=(GPL)
 url="https://gitlab.manjaro.org/applications/calamares"
@@ -19,23 +18,32 @@ backup=('usr/share/calamares/modules/bootloader.conf'
         'usr/share/calamares/modules/initcpio.conf'
         'usr/share/calamares/modules/unpackfs.conf')
 
-source+=(#"$pkgname-$pkgver-$pkgrel.tar.gz::$url/-/archive/v$pkgver/calamares-v$pkgver.tar.gz"
-         "$pkgname-$pkgver-$pkgrel.tar.gz::$url/-/archive/$_commit/$pkgname-$_commit.tar.gz"
-        )
-sha256sums=('76b7a88ae1e92cb5b0fa9908e741ee64538d09b18330e9acd78e5636ab510372')
+source=("$pkgname-$pkgver-$pkgrel.tar.gz::$url/-/archive/v$pkgver/calamares-v$pkgver.tar.gz"
+        "0001-Modified-Grub-to-install-using-no-varam-this-prevent.patch"
+        "0001-Fix-building-with-Qt-5.15.patch")
+
+sha256sums=('227029bc78f546aea12f7fc2c155dd6ae84347d7f5471ccbe9e8e612c374d86b'
+            '850d67cfb52b6b5765e08db976689c1353c73e7cde4b033f608df6c278e203c1'
+            '92cd1a4f0ec86d1edb5a4cef3c82bc6d16e00820b7b9bd38c4c26b3a121ea929')
 
 prepare() {
-	mv ${srcdir}/calamares-${_commit} ${srcdir}/calamares-${pkgver}
-	#mv ${srcdir}/calamares-v${pkgver} ${srcdir}/calamares-${pkgver}
+	mv ${srcdir}/calamares-v${pkgver} ${srcdir}/calamares-${pkgver}
 	cd ${srcdir}/calamares-${pkgver}
 	sed -i -e 's/"Install configuration files" OFF/"Install configuration files" ON/' CMakeLists.txt
 
 	# patches here
+    local src
+    for src in "${source[@]}"; do
+       src="${src%%::*}"
+       src="${src##*/}"
+      [[ $src = *.patch ]] || continue
+      msg2 "Applying patch: $src..."
+      patch -Np1 < "../$src"
+    done
 
 	# change version
 	sed -i -e "s|$pkgver|$_pkgver|g" CMakeLists.txt
-	#_ver="$(cat CMakeLists.txt | grep -m3 -e "  VERSION" | grep -o "[[:digit:]]*" | xargs | sed s'/ /./g')"
-	_ver="$pkgver"
+	_ver="$(cat CMakeLists.txt | grep -m3 -e "  VERSION" | grep -o "[[:digit:]]*" | xargs | sed s'/ /./g')"
 	printf 'Version: %s-%s' "${_ver}" "${pkgrel}"
 	sed -i -e "s|\${CALAMARES_VERSION_MAJOR}.\${CALAMARES_VERSION_MINOR}.\${CALAMARES_VERSION_PATCH}|${_ver}-${pkgrel}|g" CMakeLists.txt
 	sed -i -e "s|CALAMARES_VERSION_RC 1|CALAMARES_VERSION_RC 0|g" CMakeLists.txt
