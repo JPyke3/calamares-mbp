@@ -19,12 +19,13 @@ backup=('usr/share/calamares/modules/bootloader.conf'
         'usr/share/calamares/modules/unpackfs.conf')
 
 source=("$pkgname-$pkgver-$pkgrel.tar.gz::$url/-/archive/v$pkgver/calamares-v$pkgver.tar.gz"
-        "0001-Modified-Grub-to-install-using-no-varam-this-prevent.patch"
+        "0001-Added-novram-to-the-calamares-grub-install-arguments.patch"
         "0001-Fix-building-with-Qt-5.15.patch")
 
 sha256sums=('227029bc78f546aea12f7fc2c155dd6ae84347d7f5471ccbe9e8e612c374d86b'
-            '850d67cfb52b6b5765e08db976689c1353c73e7cde4b033f608df6c278e203c1'
-            '92cd1a4f0ec86d1edb5a4cef3c82bc6d16e00820b7b9bd38c4c26b3a121ea929')
+            '1053e615df745bd438eee028b9d6cd2c75e3cafa3f2f867e5584fa5d852976f0'
+            '92cd1a4f0ec86d1edb5a4cef3c82bc6d16e00820b7b9bd38c4c26b3a121ea929'
+            'dac0d521d5fcbef088b05186fdb8569c84823d096a185894b58613b55edcb9d1')
 
 prepare() {
 	mv ${srcdir}/calamares-v${pkgver} ${srcdir}/calamares-${pkgver}

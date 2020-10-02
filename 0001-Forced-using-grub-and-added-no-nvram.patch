@@ -1,0 +1,56 @@
+From 197e855fd2b8f3c993bf49dc7e4a26aad49a3211 Mon Sep 17 00:00:00 2001
+From: JPyke3 <pyke.jacob1@gmail.com>
+Date: Fri, 2 Oct 2020 14:48:26 +1000
+Subject: [PATCH] Forced using grub and added no nvram
+
+* Added grub as the default bootloader, hard coded that calamares will
+  always use grub as the bootloader
+
+* Added the --no-nvram argument to grub-install, if this isn't set this
+  can cause a kernel panic
+
+Signed-off-by: JPyke3 <pyke.jacob1@gmail.com>
+---
+ src/modules/bootloader/main.py | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
+
+diff --git a/src/modules/bootloader/main.py b/src/modules/bootloader/main.py
+index 9d705adfc..be13730db 100644
+--- a/src/modules/bootloader/main.py
++++ b/src/modules/bootloader/main.py
+@@ -294,6 +294,7 @@ def install_grub(efi_directory, fw_type):
+                                "--target=" + efi_target,
+                                "--efi-directory=" + efi_directory,
+                                "--bootloader-id=" + efi_bootloader_id,
++                               "--no-nvram"
+                                "--force"])
+ 
+         # VFAT is weird, see issue CAL-385
+@@ -420,18 +421,12 @@ def prepare_bootloader(fw_type):
+     """
+     efi_boot_loader = libcalamares.job.configuration["efiBootLoader"]
+     efi_directory = libcalamares.globalstorage.value("efiSystemPartition")
+-
+-    if efi_boot_loader == "systemd-boot" and fw_type == "efi":
+-        install_systemd_boot(efi_directory)
+-    elif efi_boot_loader == "sb-shim" and fw_type == "efi":
+-        install_secureboot(efi_directory)
+-    elif efi_boot_loader == "grub" or fw_type != "efi":
+-        install_grub(efi_directory, fw_type)
+-    else:
+-        libcalamares.utils.debug( "WARNING: the combination of "
+-            "boot-loader '{!s}' and firmware '{!s}' "
+-            "is not supported.".format(efi_boot_loader, fw_type) )
+-
++    """
++    Force installing grub, this is the most stable bootloader for T2 MacBooks,
++    Obviously this fix will never make it upstream so it is safe to force
++    like this
++    """
++    install_grub(efi_directory, fw_type)
+ 
+ def run():
+     """
+-- 
+2.28.0
+
