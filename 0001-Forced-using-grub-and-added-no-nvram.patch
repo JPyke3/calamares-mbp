@@ -22,7 +22,7 @@ index 9d705adfc..be13730db 100644
                                 "--target=" + efi_target,
                                 "--efi-directory=" + efi_directory,
                                 "--bootloader-id=" + efi_bootloader_id,
-+                               "--no-nvram"
++                               "--no-nvram",
                                 "--force"])
  
          # VFAT is weird, see issue CAL-385
