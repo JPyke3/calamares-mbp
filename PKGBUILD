@@ -23,7 +23,7 @@ source=("$pkgname-$pkgver-$pkgrel.tar.gz::$url/-/archive/v$pkgver/calamares-v$pk
         "0001-Fix-building-with-Qt-5.15.patch")
 
 sha256sums=('227029bc78f546aea12f7fc2c155dd6ae84347d7f5471ccbe9e8e612c374d86b'
-            'c41a87c6e00c382416fd1b13107b95f8ef061dfca1f74ce9fd05cdd0979df035'
+            'eb79d58a3861bef8f191f6703f92cf3519de56f7ba682cefbe273995ef4daad3'
             '92cd1a4f0ec86d1edb5a4cef3c82bc6d16e00820b7b9bd38c4c26b3a121ea929')
 
 prepare() {
